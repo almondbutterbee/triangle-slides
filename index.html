@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slides</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .slide.active {
+            opacity: 1;
+        }
+        .slide-line {
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+        .editable {
+            border: none;
+            background: transparent;
+            font-size: inherit;
+            text-align: center;
+            width: 100px;
+            margin: 0 5px;
+        }
+        .editable:focus {
+            outline: none;
+        }
+        #slide1 {
+            background-color: #e6f3ff;
+        }
+        #slide2 {
+            background-color: #fff0f0;
+        }
+    </style>
+</head>
+<body>
+    <div id="slide1" class="slide active">
+        <div class="slide-line">Stay Hydrated! 🚰</div>
+        <div class="slide-line">Stay Sexy! 🍬</div>
+    </div>
+    <div id="slide2" class="slide">
+        <div class="slide-line">Please be kind.</div>
+        <div class="slide-line">I am making $<input type="text" class="editable" id="amount" value="0"> from this trip</div>
+        <div class="slide-line">This is an hourly rate of $<input type="text" class="editable" id="rate" value="0">/hr</div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function toggleSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // Switch slides every 10 seconds
+        setInterval(toggleSlide, 10000);
+
+        // Save editable values to localStorage
+        document.querySelectorAll('.editable').forEach(input => {
+            // Load saved value if it exists
+            const savedValue = localStorage.getItem(input.id);
+            if (savedValue) input.value = savedValue;
+
+            // Save value when changed
+            input.addEventListener('input', () => {
+                localStorage.setItem(input.id, input.value);
+            });
+        });
+    </script>
+</body>
+</html>
